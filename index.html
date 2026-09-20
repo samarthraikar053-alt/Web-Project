@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Track Well - Smart Habit Tracker and Task Management System</title>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <!-- CSS -->
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/layout.css">
+    <link rel="stylesheet" href="css/components.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="logo">
+            <i class="fa-solid fa-layer-group"></i>
+            <span>Track Well</span>
+        </div>
+        <ul class="nav-links" id="nav-links">
+            <li><a href="#home" class="nav-item active" data-target="home">Home</a></li>
+            <li><a href="#features" class="nav-item" data-target="features">Features</a></li>
+            <li class="auth-required"><a href="#dashboard" class="nav-item" data-target="dashboard">Dashboard</a></li>
+            <li class="auth-required"><a href="#analytics" class="nav-item" data-target="analytics">Analytics</a></li>
+            <li><a href="#contact" class="nav-item" data-target="contact">Contact</a></li>
+            <li id="nav-login-btn"><a href="#auth" class="nav-item btn btn-primary btn-sm" data-target="auth" style="color: white; padding: 0.4rem 1rem;">Login</a></li>
+            <li id="nav-profile-btn" style="display: none;" class="auth-required"><a href="#profile" class="nav-item" data-target="profile"><i class="fa-solid fa-user" style="margin-right: 0.25rem;"></i> <span id="nav-user-name"></span></a></li>
+            <li style="display: flex; align-items: center;"><button id="theme-toggle" class="btn-icon" title="Toggle Theme" style="color: var(--text-main);"><i class="fa-solid fa-moon"></i></button></li>
+        </ul>
+        <div class="menu-toggle" id="mobile-menu"><i class="fa-solid fa-bars"></i></div>
+    </nav>
+
+    <!-- Main Content Container (SPA) -->
+    <main id="app-content">
+        <!-- Home / Landing Page -->
+        <section id="home" class="page-section active">
+            <div class="hero">
+                <div class="hero-content">
+                    <h1>Track Well</h1>
+                    <p class="tagline">Track habits. Manage tasks. Improve productivity.</p>
+                    <p class="description">A smart productivity web application designed for students and young professionals to manage daily routines efficiently.</p>
+                    <div class="cta-buttons">
+                        <button class="btn btn-primary nav-item" data-target="dashboard">Get Started</button>
+                        <button class="btn btn-secondary nav-item" data-target="features">View Features</button>
+                    </div>
+                </div>
+                <div class="hero-illustration">
+                    <img src="https://illustrations.popsy.co/amber/student-going-to-school.svg" alt="Productivity Illustration">
+                </div>
+            </div>
+        </section>
+
+        <!-- Features Section -->
+        <section id="features" class="page-section">
+            <div class="section-header">
+                <h2>Powerful Features</h2>
+                <p>Everything you need to stay organized and productive.</p>
+            </div>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="icon-wrapper"><i class="fa-solid fa-check-double"></i></div>
+                    <h3>Habit Tracking</h3>
+                    <p>Track daily habits like study, sleep, water intake, and exercise with ease.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="icon-wrapper"><i class="fa-solid fa-list-check"></i></div>
+                    <h3>Task Management</h3>
+                    <p>Add, update, delete, and organize daily tasks seamlessly.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="icon-wrapper"><i class="fa-solid fa-bell"></i></div>
+                    <h3>Smart Reminders</h3>
+                    <p>Get reminders for pending tasks, deadlines, and daily habits.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="icon-wrapper"><i class="fa-solid fa-chart-pie"></i></div>
+                    <h3>Progress Analytics</h3>
+                    <p>View beautiful charts and statistics of your productivity rates.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Dashboard Section -->
+        <section id="dashboard" class="page-section">
+            <div class="dashboard-header">
+                <h2 id="welcome-message">Welcome Back! <span class="wave">👋</span></h2>
+                <p id="current-date">Today is ...</p>
+            </div>
+            
+            <div class="quick-stats">
+                <div class="stat-card nav-item" data-target="analytics" style="cursor: pointer;" title="View Analytics">
+                    <i class="fa-solid fa-bullseye stat-icon text-blue"></i>
+                    <div class="stat-info">
+                        <h4>Productivity Score</h4>
+                        <h2 id="stat-score">0%</h2>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <i class="fa-solid fa-list-check stat-icon text-purple"></i>
+                    <div class="stat-info">
+                        <h4>Pending Tasks</h4>
+                        <h2 id="stat-tasks">0</h2>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <i class="fa-solid fa-fire stat-icon text-orange"></i>
+                    <div class="stat-info">
+                        <h4>Habits Completed</h4>
+                        <h2 id="stat-habits">0/0</h2>
+                    </div>
+                </div>
+                <div class="stat-card nav-item" data-target="analytics" style="cursor: pointer;" title="View Analytics">
+                    <i class="fa-solid fa-chart-line stat-icon text-green"></i>
+                    <div class="stat-info">
+                        <h4>Completion Rate</h4>
+                        <h2 id="stat-rate">0%</h2>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Reminder Section inside Dashboard -->
+            <div class="reminders-panel" id="reminders-panel">
+                <!-- Populated by JS -->
+            </div>
+
+            <div class="dashboard-grid">
+                <!-- Habit Tracker -->
+                <div class="dashboard-card" id="habit-section">
+                    <div class="card-header">
+                        <h3>Daily Habits</h3>
+                        <button class="btn-icon" id="add-habit-btn" title="Add Habit"><i class="fa-solid fa-plus"></i></button>
+                    </div>
+                    <div class="add-form" id="habit-form" style="display: none; flex-direction: column;">
+                        <input type="text" id="habit-input" placeholder="e.g. Study 2 Hours...">
+                        <div class="task-options" style="margin-bottom: 0.5rem;">
+                            <input type="time" id="habit-time" title="Daily Reminder Time">
+                        </div>
+                        <button class="btn btn-primary btn-sm" id="save-habit-btn">Add</button>
+                    </div>
+                    <ul class="item-list" id="habit-list">
+                        <!-- Populated by JS -->
+                    </ul>
+                </div>
+
+                <!-- Task Manager -->
+                <div class="dashboard-card" id="task-section">
+                    <div class="card-header">
+                        <h3>To-Do List</h3>
+                        <button class="btn-icon" id="add-task-btn" title="Add Task"><i class="fa-solid fa-plus"></i></button>
+                    </div>
+                    <div class="add-form task-form" id="task-form" style="display: none;">
+                        <input type="text" id="task-input" placeholder="e.g. Finish Assignment...">
+                        <div class="task-options">
+                            <select id="task-priority">
+                                <option value="Low">Low Priority</option>
+                                <option value="Medium">Medium Priority</option>
+                                <option value="High">High Priority</option>
+                            </select>
+                            <input type="date" id="task-deadline">
+                            <input type="time" id="task-time" title="Notification Time">
+                        </div>
+                        <button class="btn btn-primary btn-sm" id="save-task-btn">Add</button>
+                    </div>
+                    
+                    <div class="task-filters" id="task-filters">
+                        <button class="filter-btn active" data-filter="all">All</button>
+                        <button class="filter-btn" data-filter="pending">Pending</button>
+                        <button class="filter-btn" data-filter="completed">Completed</button>
+                    </div>
+
+                    <ul class="item-list" id="task-list">
+                        <!-- Populated by JS -->
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- Analytics Section -->
+        <section id="analytics" class="page-section">
+            <div class="section-header">
+                <h2>Progress Analytics</h2>
+                <p>Visualize your productivity and consistency over time.</p>
+            </div>
+            <div class="analytics-grid">
+                <div class="chart-card">
+                    <h3>Completion Rate (Pie Chart)</h3>
+                    <div class="chart-container">
+                        <canvas id="completionChart"></canvas>
+                    </div>
+                </div>
+                <div class="chart-card">
+                    <h3>Productivity vs Completion Rate</h3>
+                    <div class="chart-container">
+                        <canvas id="productivityChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Auth Section -->
+        <section id="auth" class="page-section">
+            <div class="auth-container" style="max-width: 400px; margin: 2rem auto; background: var(--card-bg); padding: 2rem; border-radius: var(--radius-lg); box-shadow: var(--shadow-md);">
+                
+                <!-- Login View -->
+                <div id="login-view">
+                    <div class="section-header" style="margin-bottom: 2rem;">
+                        <h2 style="font-size: 2rem;">Welcome Back</h2>
+                        <p>Login to access your dashboard</p>
+                    </div>
+                    <form id="login-form" onsubmit="event.preventDefault();">
+                        <div class="form-group">
+                            <input type="email" id="login-email" placeholder="Email Address" required>
+                        </div>
+                        <div class="form-group">
+                            <input type="password" id="login-password" placeholder="Password" required>
+                        </div>
+                        <p id="login-error" class="text-red hidden" style="font-size: 0.9rem; margin-bottom: 1rem;"></p>
+                        <button type="submit" class="btn btn-primary" style="width: 100%;">Login</button>
+                    </form>
+                    
+                    <div style="margin: 1.5rem 0; text-align: center; position: relative;">
+                        <hr style="border: 0; border-top: 1px solid var(--border-color);">
+                        <span style="position: absolute; top: -10px; left: 50%; transform: translateX(-50%); background: var(--card-bg); padding: 0 10px; color: var(--text-muted); font-size: 0.9rem;">OR</span>
+                    </div>
+
+                    <button id="google-login-btn" class="btn btn-secondary" style="width: 100%;"><i class="fa-brands fa-google"></i> Continue with Google</button>
+                    
+                    <div style="margin-top: 1.5rem; text-align: center; font-size: 0.9rem;">
+                        <a href="#" id="show-forgot-btn" class="text-blue">Forgot Password?</a><br><br>
+                        Don't have an account? <a href="#" id="show-signup-btn" class="text-blue font-weight-bold">Sign Up</a>
+                    </div>
+                </div>
+
+                <!-- Sign Up View -->
+                <div id="signup-view" class="hidden">
+                    <div class="section-header" style="margin-bottom: 2rem;">
+                        <h2 style="font-size: 2rem;">Create Account</h2>
+                        <p>Join Track Well today</p>
+                    </div>
+                    <form id="signup-form" onsubmit="event.preventDefault();">
+                        <div class="form-group">
+                            <input type="text" id="signup-name" placeholder="Full Name" required>
+                        </div>
+                        <div class="form-group">
+                            <input type="email" id="signup-email" placeholder="Email Address" required>
+                        </div>
+                        <div class="form-group">
+                            <input type="password" id="signup-password" placeholder="Password" required minlength="6">
+                        </div>
+                        <p id="signup-error" class="text-red hidden" style="font-size: 0.9rem; margin-bottom: 1rem;"></p>
+                        <button type="submit" class="btn btn-primary" style="width: 100%;">Sign Up</button>
+                    </form>
+                    <div style="margin-top: 1.5rem; text-align: center; font-size: 0.9rem;">
+                        Already have an account? <a href="#" id="show-login-btn" class="text-blue font-weight-bold">Login</a>
+                    </div>
+                </div>
+
+                <!-- Forgot Password View -->
+                <div id="forgot-view" class="hidden">
+                    <div class="section-header" style="margin-bottom: 2rem;">
+                        <h2 style="font-size: 2rem;">Reset Password</h2>
+                        <p>Enter your email to receive a link</p>
+                    </div>
+                    <form id="forgot-form" onsubmit="event.preventDefault(); alert('Reset link sent to your email! (Mocked)'); document.getElementById('show-login-btn-2').click();">
+                        <div class="form-group">
+                            <input type="email" id="forgot-email" placeholder="Email Address" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary" style="width: 100%;">Send Reset Link</button>
+                    </form>
+                    <div style="margin-top: 1.5rem; text-align: center; font-size: 0.9rem;">
+                        Remembered your password? <a href="#" id="show-login-btn-2" class="text-blue font-weight-bold">Login</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Profile Section -->
+        <section id="profile" class="page-section">
+            <div class="section-header">
+                <h2>User Profile</h2>
+                <p>Manage your account settings</p>
+            </div>
+            <div class="contact-container" style="max-width: 600px; margin: 0 auto; display: block;">
+                <div class="form-group" style="margin-bottom: 1.5rem; text-align: center;">
+                    <div class="icon-wrapper" style="width: 80px; height: 80px; font-size: 2rem; margin: 0 auto 1rem;"><i class="fa-solid fa-user-astronaut"></i></div>
+                    <h3 id="profile-display-name" style="font-size: 1.5rem; color: var(--primary-color);">User Name</h3>
+                    <p id="profile-display-email" class="text-muted">user@example.com</p>
+                </div>
+                <hr style="border: 0; border-top: 1px solid var(--border-color); margin: 2rem 0;">
+                <form id="profile-form" onsubmit="event.preventDefault();">
+                    <div class="form-group">
+                        <label style="display:block; margin-bottom: 0.5rem; font-weight: 500;">Update Name</label>
+                        <input type="text" id="profile-name-input" placeholder="Your Name" required>
+                    </div>
+                    <div style="display: flex; gap: 1rem;">
+                        <button type="submit" class="btn btn-primary" style="flex: 1;">Save Changes</button>
+                        <button type="button" id="logout-btn" class="btn btn-secondary" style="flex: 1; border-color: var(--danger); color: var(--danger);"><i class="fa-solid fa-right-from-bracket"></i> Logout</button>
+                    </div>
+                </form>
+            </div>
+        </section>
+
+        <!-- Contact Section -->
+        <section id="contact" class="page-section">
+            <div class="section-header">
+                <h2>Contact & Info</h2>
+                <p>Get in touch with the development team.</p>
+            </div>
+            <div class="contact-container">
+                <div class="contact-info">
+                    <h3>Project Details</h3>
+                    <p><strong>Department:</strong> Computer Science and Engineering</p>
+                    <p><strong>Project Type:</strong> Mini Project</p>
+                    <p><strong>Academic Year:</strong> 2025-26</p>
+                    <p><strong>Version:</strong> 1.0.0</p>
+                </div>
+                <div class="contact-form">
+                    <form onsubmit="event.preventDefault(); alert('Message sent successfully!');">
+                        <div class="form-group">
+                            <input type="text" placeholder="Your Name" required>
+                        </div>
+                        <div class="form-group">
+                            <input type="email" placeholder="Your Email" required>
+                        </div>
+                        <div class="form-group">
+                            <textarea placeholder="Your Message" rows="4" required></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Send Message</button>
+                    </form>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-brand">
+                <i class="fa-solid fa-layer-group"></i> Track Well
+            </div>
+            <div class="footer-links">
+                <a href="#home" class="nav-item" data-target="home">Home</a>
+                <a href="#features" class="nav-item" data-target="features">Features</a>
+                <a href="#dashboard" class="nav-item" data-target="dashboard">Dashboard</a>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2025-26 Track Well. Mini Project - Department of Computer Science and Engineering.</p>
+        </div>
+    </footer>
+
+
+
+    <!-- Alarm Notification Modal -->
+    <div id="alarm-modal" class="modal-overlay hidden">
+        <div class="modal-content" style="border: 2px solid var(--danger);">
+            <div class="icon-wrapper" style="margin-bottom:1rem; background: rgba(239, 68, 68, 0.1); color: var(--danger);">
+                <i class="fa-solid fa-bell fa-shake"></i>
+            </div>
+            <h2 style="color: var(--danger);">Task Reminder!</h2>
+            <p id="alarm-task-text" style="margin-bottom: 1.5rem; font-size: 1.1rem; font-weight: 500;"></p>
+            <button id="stop-alarm-btn" class="btn btn-primary" style="width: 100%; background: var(--danger);">Stop Alarm & Complete Task</button>
+            <button id="dismiss-alarm-btn" class="btn btn-secondary" style="width: 100%; margin-top: 0.5rem; border-color: var(--danger); color: var(--danger);">Dismiss</button>
+        </div>
+    </div>
+
+    <audio id="alarm-sound" src="https://assets.mixkit.co/active_storage/sfx/2869/2869-preview.mp3" loop preload="auto"></audio>
+
+    <script src="js/store.js"></script>
+    <script src="js/components/habitTracker.js"></script>
+    <script src="js/components/taskManager.js"></script>
+    <script src="js/components/dashboard.js"></script>
+    <script src="js/components/analytics.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>
